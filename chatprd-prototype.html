@@ -1,0 +1,2353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatPRD - Chrome Extension Prototype</title>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+    
+    <style>
+    /* Material Design 3 Design Tokens */
+    :root {
+      /* Primary Colors */
+      --md-sys-color-primary: #1a73e8;
+      --md-sys-color-on-primary: #ffffff;
+      --md-sys-color-primary-container: #d3e3fd;
+      --md-sys-color-on-primary-container: #041e49;
+      
+      /* Secondary Colors */
+      --md-sys-color-secondary: #5f6368;
+      --md-sys-color-on-secondary: #ffffff;
+      --md-sys-color-secondary-container: #e2e3e6;
+      --md-sys-color-on-secondary-container: #1d1f23;
+      
+      /* Surface Colors */
+      --md-sys-color-surface: #ffffff;
+      --md-sys-color-on-surface: #202124;
+      --md-sys-color-surface-variant: #f8f9fa;
+      --md-sys-color-on-surface-variant: #5f6368;
+      --md-sys-color-surface-container: #f1f3f4;
+      --md-sys-color-surface-container-high: #e8eaed;
+      
+      /* Background Colors */
+      --md-sys-color-background: #ffffff;
+      --md-sys-color-on-background: #202124;
+      
+      /* Error Colors */
+      --md-sys-color-error: #d93025;
+      --md-sys-color-on-error: #ffffff;
+      --md-sys-color-error-container: #fce8e6;
+      --md-sys-color-on-error-container: #410e0b;
+      
+      /* Success Colors */
+      --md-sys-color-success: #137333;
+      --md-sys-color-on-success: #ffffff;
+      --md-sys-color-success-container: #e6f4ea;
+      --md-sys-color-on-success-container: #002204;
+      
+      /* Warning Colors */
+      --md-sys-color-warning: #f29900;
+      --md-sys-color-on-warning: #ffffff;
+      --md-sys-color-warning-container: #fef7e0;
+      --md-sys-color-on-warning-container: #3c1e00;
+      
+      /* Outline Colors */
+      --md-sys-color-outline: #dadce0;
+      --md-sys-color-outline-variant: #e8eaed;
+      
+      /* Shadows */
+      --md-sys-elevation-level0: none;
+      --md-sys-elevation-level1: 0 1px 3px rgba(60, 64, 67, 0.3), 0 4px 8px 3px rgba(60, 64, 67, 0.15);
+      --md-sys-elevation-level2: 0 2px 6px 2px rgba(60, 64, 67, 0.15), 0 8px 24px 4px rgba(60, 64, 67, 0.3);
+      --md-sys-elevation-level3: 0 4px 8px 3px rgba(60, 64, 67, 0.15), 0 16px 32px 8px rgba(60, 64, 67, 0.3);
+      
+      /* Typography */
+      --md-sys-typescale-display-large-font-family-name: 'Google Sans';
+      --md-sys-typescale-display-large-font-weight: 400;
+      --md-sys-typescale-display-large-font-size: 48px;
+      --md-sys-typescale-display-large-line-height: 56px;
+      
+      --md-sys-typescale-headline-large-font-family-name: 'Google Sans';
+      --md-sys-typescale-headline-large-font-weight: 400;
+      --md-sys-typescale-headline-large-font-size: 28px;
+      --md-sys-typescale-headline-large-line-height: 36px;
+      
+      --md-sys-typescale-headline-medium-font-family-name: 'Google Sans';
+      --md-sys-typescale-headline-medium-font-weight: 400;
+      --md-sys-typescale-headline-medium-font-size: 24px;
+      --md-sys-typescale-headline-medium-line-height: 32px;
+      
+      --md-sys-typescale-title-large-font-family-name: 'Roboto';
+      --md-sys-typescale-title-large-font-weight: 500;
+      --md-sys-typescale-title-large-font-size: 20px;
+      --md-sys-typescale-title-large-line-height: 26px;
+      
+      --md-sys-typescale-title-medium-font-family-name: 'Roboto';
+      --md-sys-typescale-title-medium-font-weight: 500;
+      --md-sys-typescale-title-medium-font-size: 14px;
+      --md-sys-typescale-title-medium-line-height: 20px;
+      
+      --md-sys-typescale-body-large-font-family-name: 'Roboto';
+      --md-sys-typescale-body-large-font-weight: 400;
+      --md-sys-typescale-body-large-font-size: 14px;
+      --md-sys-typescale-body-large-line-height: 20px;
+      
+      --md-sys-typescale-body-medium-font-family-name: 'Roboto';
+      --md-sys-typescale-body-medium-font-weight: 400;
+      --md-sys-typescale-body-medium-font-size: 12px;
+      --md-sys-typescale-body-medium-line-height: 18px;
+      
+      --md-sys-typescale-label-medium-font-family-name: 'Roboto';
+      --md-sys-typescale-label-medium-font-weight: 500;
+      --md-sys-typescale-label-medium-font-size: 11px;
+      --md-sys-typescale-label-medium-line-height: 14px;
+      
+      /* Spacing Scale */
+      --md-sys-spacing-4: 4px;
+      --md-sys-spacing-8: 8px;
+      --md-sys-spacing-12: 12px;
+      --md-sys-spacing-16: 16px;
+      --md-sys-spacing-20: 20px;
+      --md-sys-spacing-24: 24px;
+      --md-sys-spacing-32: 32px;
+      --md-sys-spacing-40: 40px;
+      --md-sys-spacing-48: 48px;
+      --md-sys-spacing-64: 64px;
+      
+      /* Shape Scale */
+      --md-sys-shape-corner-none: 0px;
+      --md-sys-shape-corner-extra-small: 4px;
+      --md-sys-shape-corner-small: 8px;
+      --md-sys-shape-corner-medium: 12px;
+      --md-sys-shape-corner-large: 16px;
+      --md-sys-shape-corner-extra-large: 28px;
+      --md-sys-shape-corner-full: 50%;
+    }
+
+    /* Reset and Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--md-sys-typescale-body-large-font-family-name), sans-serif;
+      font-size: var(--md-sys-typescale-body-large-font-size);
+      line-height: var(--md-sys-typescale-body-large-line-height);
+      background-color: var(--md-sys-color-surface-variant);
+      color: var(--md-sys-color-on-background);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Confluence Page Mock */
+    .confluence-page {
+      width: calc(100% - 600px);
+      min-height: 100vh;
+      background: var(--md-sys-color-surface);
+      padding: var(--md-sys-spacing-48) var(--md-sys-spacing-64);
+      margin-right: 600px;
+      transition: all 0.3s cubic-bezier(0.2, 0.0, 0, 1.0);
+    }
+
+    .confluence-page.collapsed {
+      width: calc(100% - 600px);
+      margin-right: 600px;
+    }
+
+    .confluence-page.hidden {
+      width: 100%;
+      margin-right: 0;
+    }
+
+    .confluence-header {
+      margin-bottom: var(--md-sys-spacing-32);
+    }
+
+    .confluence-breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: var(--md-sys-spacing-4);
+      color: var(--md-sys-color-on-surface-variant);
+      font-size: var(--md-sys-typescale-body-medium-font-size);
+      line-height: var(--md-sys-typescale-body-medium-line-height);
+      margin-bottom: var(--md-sys-spacing-16);
+    }
+
+    .confluence-breadcrumb .material-symbols-outlined {
+      font-size: 14px;
+    }
+
+    .confluence-title {
+      font-family: var(--md-sys-typescale-headline-large-font-family-name), sans-serif;
+      font-size: var(--md-sys-typescale-headline-large-font-size);
+      font-weight: var(--md-sys-typescale-headline-large-font-weight);
+      line-height: var(--md-sys-typescale-headline-large-line-height);
+      color: var(--md-sys-color-on-surface);
+    }
+
+    .confluence-content {
+      max-width: 800px;
+    }
+
+    .confluence-section {
+      margin-bottom: var(--md-sys-spacing-32);
+    }
+
+    .confluence-section h2 {
+      font-family: var(--md-sys-typescale-headline-medium-font-family-name), sans-serif;
+      font-size: var(--md-sys-typescale-headline-medium-font-size);
+      font-weight: var(--md-sys-typescale-headline-medium-font-weight);
+      line-height: var(--md-sys-typescale-headline-medium-line-height);
+      color: var(--md-sys-color-on-surface);
+      margin-bottom: var(--md-sys-spacing-16);
+    }
+
+    .confluence-section p {
+      color: var(--md-sys-color-on-surface-variant);
+      margin-bottom: var(--md-sys-spacing-16);
+    }
+
+    .confluence-section ul {
+      margin-left: var(--md-sys-spacing-24);
+      color: var(--md-sys-color-on-surface-variant);
+    }
+
+    .confluence-section li {
+      margin-bottom: var(--md-sys-spacing-8);
+    }
+
+    /* AI Suggestion Highlights */
+    .ai-suggestion {
+      position: relative;
+      background-color: var(--md-sys-color-warning-container);
+      color: var(--md-sys-color-on-warning-container);
+      padding: 2px var(--md-sys-spacing-4);
+      border-radius: var(--md-sys-shape-corner-extra-small);
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.2, 0.0, 0, 1.0);
+    }
+
+    .ai-suggestion.tech {
+      background-color: var(--md-sys-color-primary-container);
+      color: var(--md-sys-color-on-primary-container);
+    }
+
+    .ai-suggestion.security {
+      background-color: var(--md-sys-color-error-container);
+      color: var(--md-sys-color-on-error-container);
+    }
+
+    .ai-suggestion:hover {
+      opacity: 0.8;
+      transform: translateY(-1px);
+    }
+
+    /* Extension Container */
+    .extension-container {
+      position: fixed;
+      right: 0;
+      top: 0;
+      width: 600px;
+      height: 100vh;
+      background: var(--md-sys-color-surface);
+      box-shadow: var(--md-sys-elevation-level2);
+      display: flex;
+      transition: all 0.3s cubic-bezier(0.2, 0.0, 0, 1.0);
+      z-index: 1000;
+    }
+
+    .extension-container.nav-collapsed {
+      width: 600px;
+    }
+
+    .extension-container.hidden {
+      transform: translateX(100%);
+    }
+
+    /* Navigation Rail */
+    .navigation-rail {
+      width: 64px;
+      background: var(--md-sys-color-surface-variant);
+      border-right: 1px solid var(--md-sys-color-outline);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+
+    .extension-container:not(.nav-collapsed) .navigation-rail {
+      width: 64px;
+    }
+
+    .nav-header {
+      padding: var(--md-sys-spacing-12);
+      border-bottom: 1px solid var(--md-sys-color-outline);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--md-sys-spacing-8);
+      min-height: 80px;
+    }
+
+    .nav-toggle {
+      display: none;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: var(--md-sys-shape-corner-full);
+    }
+
+    .nav-logo .material-symbols-outlined {
+      font-size: 24px;
+      color: var(--md-sys-color-primary);
+    }
+
+    .nav-logo-text {
+      display: none;
+    }
+
+    /* Navigation Items */
+    .nav-items {
+      flex: 1;
+      padding: var(--md-sys-spacing-8);
+      display: flex;
+      flex-direction: column;
+      gap: var(--md-sys-spacing-4);
+    }
+
+    .nav-item {
+      width: 48px;
+      height: 48px;
+      background: none;
+      border: none;
+      border-radius: var(--md-sys-shape-corner-small);
+      color: var(--md-sys-color-on-surface-variant);
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s cubic-bezier(0.2, 0.0, 0, 1.0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--md-sys-spacing-4);
+      margin: 0 auto var(--md-sys-spacing-4) auto;
+    }
+
+    .nav-item .material-symbols-outlined {
+      font-size: 20px;
+    }
+
+    .nav-label {
+      display: none;
+    }
+
+    .nav-item.active {
+      background: var(--md-sys-color-primary-container);
+      color: var(--md-sys-color-on-primary-container);
+    }
+
+    .nav-item.active::before {
+      content: '';
+      position: absolute;
+      left: -8px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3px;
+      height: 24px;
+      background: var(--md-sys-color-primary);
+      border-radius: 0 2px 2px 0;
+    }
+
+    .nav-item:hover:not(.active) {
+      background: var(--md-sys-color-primary-container);
+      color: var(--md-sys-color-on-primary-container);
+    }
+
+    .nav-item:focus-visible {
+      outline: 2px solid var(--md-sys-color-primary);
+      outline-offset: 2px;
+    }
+
+    /* Navigation Bottom */
+    .nav-bottom {
+      padding: var(--md-sys-spacing-8);
+      border-top: 1px solid var(--md-sys-color-outline);
+      display: flex;
+      justify-content: center;
+    }
+
+    .nav-close {
+      width: 48px;
+      height: 48px;
+      background: none;
+      border: none;
+      border-radius: var(--md-sys-shape-corner-small);
+      color: var(--md-sys-color-on-surface-variant);
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.2, 0.0, 0, 1.0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-close .material-symbols-outlined {
+      font-size: 20px;
+    }
+
+    .nav-close .nav-label {
+      display: none;
+    }
+
+    .nav-close:hover {
+      background: var(--md-sys-color-error-container);
+      color: var(--md-sys-color-on-error-container);
+    }
+
+    /* Content Area */
+    .content-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    /* Tab Content */
+    .tab-content {
+      flex: 1;
+      overflow-y: auto;
+      display: none;
+    }
+
+    .tab-content.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Create Tab */
+    .create-section {
+      padding: var(--md-sys-spacing-24);
+    }
+
+    .input-group {
+      margin-bottom: var(--md-sys-spacing-24);
+    }
+
+    .input-label {
+      display: block;
+      font-size: var(--md-sys-typescale-label-medium-font-size);
+      font-weight: var(--md-sys-typescale-label-medium-font-weight);
+      line-height: var(--md-sys-typescale-label-medium-line-height);
+      color: var(--md-sys-color-on-surface);
+      margin-bottom: var(--md-sys-spacing-8);
+    }
+
+    .text-input,
+    .textarea-input {
+      width: 100%;
+      padding: var(--md-sys-spacing-12) var(--md-sys-spacing-16);
+      border: 1px solid var(--md-sys-color-outline);
+      border-radius: var(--md-sys-shape-corner-small);
+      font-size: var(--md-sys-typescale-body-large-font-size);
+      font-family: var(--md-sys-typescale-body-large-font-family-name), sans-serif;
+      background: var(--md-sys-color-surface);
+      color: var(--md-sys-color-on-surface);
+      transition: all 0.2s cubic-bezier(0.2, 0.0, 0, 1.0);
+    }
+
+    .textarea-input {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .text-input:focus,
+    .textarea-input:focus {
+      outline: none;
+      border-color: var(--md-sys-color-primary);
+      box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.12);
+    }
+
+    .text-input:hover,
+    .textarea-input:hover {
+      border-color: var(--md-sys-color-on-surface);
+    }
+
+    /* File Upload */
+    .upload-area {
+      border: 2px dashed var(--md-sys-color-outline);
+      border-radius: var(--md-sys-shape-corner-medium);
+      padding: var(--md-sys-spacing-32);
+      text-align: center;
+      transition: all 0.2s cubic-bezier(0.2, 0.0, 0, 1.0);
+      cursor: pointer;
+      margin-bottom: var(--md-sys-spacing-24);
+      background: var(--md-sys-color-surface);
+    }
+
+    .upload-area:hover {
+      border-color: var(--md-sys-color-primary);
+      background: var(--md-sys-color-primary-container);
+    }
+
+    .upload-area:focus-visible {
+      outline: 2px solid var(--md-sys-color-primary);
+      outline-offset: 2px;
+    }
+
+    .upload-icon {
+      font-size: 40px;
+      color: var(--md-sys-color-outline);
+      margin-bottom: var(--md-sys-spacing-8);
+      display: block;
+    }
+
+    .upload-area:hover .upload-icon {
+      color: var(--md-sys-color-primary);
+    }
+
+    .upload-text {
+      color: var(--md-sys-color-on-surface-variant);
+      font-size: var(--md-sys-typescale-body-medium-font-size);
+    }
+
+    .upload-text strong {
+      color: var(--md-sys-color-on-surface);
+    }
+
+    /* Context Files */
+    .context-files {
+      margin-bottom: var(--md-sys-spacing-24);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--md-sys-spacing-8);
+    }
+
+    .file-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--md-sys-spacing-8);
+      padding: var(--md-sys-spacing-8) var(--md-sys-spacing-12);
+      background: var(--md-sys-color-primary-container);
+      color: var(--md-sys-color-on-primary-container);
+      border-radius: var(--md-sys-shape-corner-small);
+      font-size: var(--md-sys-typescale-body-medium-font-size);
+      border: 1px solid var(--md-sys-color-outline);
+    }
+
+    .file-chip .material-symbols-outlined {
+      font-size: 14px;
+    }
+
+    .chip-remove {
+      background: none;
+      border: none;
+      color: inherit;
+      cursor: pointer;
+      padding: 2px;
+      border-radius: var(--md-sys-shape-corner-full);
+      transition: background-color 0.2s cubic-bezier(0.2, 0.0, 0, 1.0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chip-remove:hover {
+      background: rgba(0, 0, 0, 0.08);
+    }
+
+    .chip-remove .material-symbols-outlined {
+      font-size: 14px;
+    }
+
+    /* Buttons */
+    .button-primary {
+      background: var(--md-sys-color-primary);
+      color: var(--md-sys-color-on-primary);
+      border: none;
+      padding: var(--md-sys-spacing-12) var(--md-sys-spacing-24);
+      border-radius: var(--md-sys-shape-corner-large);
+      font-size: var(--md-sys-typescale-body-medium-font-size);
+      font-weight: var(--md-sys-typescale-title-medium-font-weight);
+      font-family: var(--md-sys-typescale-title-medium-font-family-name), sans-serif;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.2, 0.0, 0, 1.0);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--md-sys-spacing-8);
+      min-height: 40px;
+      box-shadow: var(--md-sys-elevation-level0);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .button-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: currentColor;
+      opacity: 0;
+      transition: opacity 0.2s cubic-bezier(0.2, 0.0, 0, 1.0);
+    }
+
+    .button-primary:hover::before {
+      opacity: 0.08;
+    }
+
+    .button-primary:focus-visible::before {
+      opacity: 0.12;
+    }
+
+    .button-primary:focus-visible {
+      outline: 2px solid var(--md-sys-color-primary);
+      outline-offset: 2px;
+    }
+
+    .button-primary:active {
+      box-shadow: var(--md-sys-elevation-level1);
+    }
+
+    .button-primary:disabled {
+      background: var(--md-sys-color-outline);
+      color: var(--md-sys-color-on-surface-variant);
+      cursor: not-allowed;
+    }
+
+    .button-secondary {
+      background: var(--md-sys-color-surface);
+      color: var(--md-sys-color-primary);
+      border: 1px solid var(--md-sys-color-outline);
+      padding: var(--md-sys-spacing-12) var(--md-sys-spacing-24);
+      border-radius: var(--md-sys-shape-corner-large);
+      font-size: var(--md-sys-typescale-body-medium-font-size);
+      font-weight: var(--md-sys-typescale-title-medium-font-weight);
+      font-family: var(--md-sys-typescale-title-medium-font-family-name), sans-serif;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.2, 0.0, 0, 1.0);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--md-sys-spacing-8);
+      min-height: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .button-secondary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: currentColor;
+      opacity: 0;
+      transition: opacity 0.2s cubic-bezier(0.2, 0.0, 0, 1.0);
+    }
+
+    .button-secondary:hover::before {
+      opacity: 0.08;
+    }
+
+    .button-secondary:hover {
+      border-color: var(--md-sys-color-primary);
+    }
+
+    .button-secondary:focus-visible {
+      outline: 2px solid var(--md-sys-color-primary);
+      outline-offset: 2px;
+    }
+
+    .button-secondary .material-symbols-outlined,
+    .button-primary .material-symbols-outlined {
+      font-size: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Agent Feedback Section */
+    .agents-section {
+      padding: var(--md-sys-spacing-24);
+    }
+
+    .agent-card {
+      background: var(--md-sys-color-surface-container);
+      border-radius: var(--md-sys-shape-corner-medium);
+      padding: var(--md-sys-spacing-20);
+      margin-bottom: var(--md-sys-spacing-16);
+      border: 1px solid var(--md-sys-color-outline);
+      transition: all 0.2s cubic-bezier(0.2, 0.0, 0, 1.0);
+    }
+
+    .agent-card:hover {
+      box-shadow: var(--md-sys-elevation-level1);
+    }
+
+    .agent-header {
+      display: flex;
+      align-items: center;
+      gap: var(--md-sys-spacing-12);
+      margin-bottom: var(--md-sys-spacing-12);
+    }
+
+    .agent-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--md-sys-shape-corner-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--md-sys-color-on-primary);
+    }
+
+    .agent-avatar.pm {
+      background: var(--md-sys-color-primary);
+    }
+
+    .agent-avatar.tech {
+      background: var(--md-sys-color-success);
+    }
+
+    .agent-avatar.security {
+      background: var(--md-sys-color-error);
+    }
+
+    .agent-info {
+      flex: 1;
+    }
+
+    .agent-name {
+      font-weight: var(--md-sys-typescale-title-medium-font-weight);
+      font-size: var(--md-sys-typescale-title-medium-font-size);
+      color: var(--md-sys-color-on-surface);
+      margin-bottom: 2px;
+    }
+
+    .agent-role {
+      font-size: var(--md-sys-typescale-label-medium-font-size);
+      color: var(--md-sys-color-on-surface-variant);
+    }
+
+    .agent-status {
+      display: flex;
+      align-items: center;
+      gap: var(--md-sys-spacing-4);
+      font-size: var(--md-sys-typescale-label-medium-font-size);
+      font-weight: var(--md-sys-typescale-label-medium-font-weight);
+    }
+
+    .agent-status.active {
+      color: var(--md-sys-color-success);
+    }
+
+    .agent-status.pending {
+      color: var(--md-sys-color-warning);
+    }
+
+    .agent-status .material-symbols-outlined {
+      font-size: 14px;
+    }
+
+    .agent-feedback {
+      color: var(--md-sys-color-on-surface-variant);
+      font-size: var(--md-sys-typescale-body-medium-font-size);
+      line-height: 1.6;
+      margin-bottom: var(--md-sys-spacing-12);
+    }
+
+    .feedback-actions {
+      display: flex;
+      gap: var(--md-sys-spacing-8);
+    }
+
+    .feedback-button {
+      font-size: var(--md-sys-typescale-label-medium-font-size);
+      padding: var(--md-sys-spacing-8) var(--md-sys-spacing-12);
+      border-radius: var(--md-sys-shape-corner-small);
+      min-height: 32px;
+    }
+
+    /* Chat Tab */
+    .chat-section {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .chat-header {
+      padding: var(--md-sys-spacing-16) var(--md-sys-spacing-24);
+      border-bottom: 1px solid var(--md-sys-color-outline);
+      background: var(--md-sys-color-surface-variant);
+    }
+
+    .chat-agent-selector {
+      margin-bottom: 0;
+    }
+
+    .agent-select {
+      width: 100%;
+      padding: var(--md-sys-spacing-12) var(--md-sys-spacing-16);
+      border: 1px solid var(--md-sys-color-outline);
+      border-radius: var(--md-sys-shape-corner-small);
+      font-size: var(--md-sys-typescale-body-large-font-size);
+      font-family: var(--md-sys-typescale-body-large-font-family-name), sans-serif;
+      background: var(--md-sys-color-surface);
+      color: var(--md-sys-color-on-surface);
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.2, 0.0, 0, 1.0);
+    }
+
+    .agent-select:focus {
+      outline: none;
+      border-color: var(--md-sys-color-primary);
+      box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.12);
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: var(--md-sys-spacing-16);
+      display: flex;
+      flex-direction: column;
+      gap: var(--md-sys-spacing-16);
+    }
+
+    .chat-message {
+      display: flex;
+      gap: var(--md-sys-spacing-12);
+      max-width: 100%;
+      align-items: flex-start;
+    }
+
+    .chat-message.user-message {
+      flex-direction: row-reverse;
+    }
+
+    .chat-message.user-message .message-content {
+      background: var(--md-sys-color-primary-container);
+      color: var(--md-sys-color-on-primary-container);
+      border-radius: var(--md-sys-shape-corner-medium) var(--md-sys-shape-corner-extra-small) var(--md-sys-shape-corner-medium) var(--md-sys-shape-corner-medium);
+    }
+
+    .chat-message.agent-message .message-content {
+      text-align: left;
+    }
+
+    .chat-message.agent-message .message-text {
+      text-align: left;
+      margin-left: 0;
+      padding-left: 0;
+      text-indent: 0;
+    }
+
+    .message-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--md-sys-shape-corner-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 18px;
+      color: white;
+      margin-top: 0;
+    }
+
+    .message-avatar.general {
+      background: var(--md-sys-color-primary);
+    }
+
+    .message-avatar.pm {
+      background: var(--md-sys-color-primary);
+    }
+
+    .message-avatar.tech {
+      background: var(--md-sys-color-success);
+    }
+
+    .message-avatar.security {
+      background: var(--md-sys-color-error);
+    }
+
+    .message-avatar.user {
+      background: var(--md-sys-color-secondary);
+    }
+
+    .message-content {
+      flex: 1;
+      background: var(--md-sys-color-surface-container);
+      border-radius: var(--md-sys-shape-corner-extra-small) var(--md-sys-shape-corner-medium) var(--md-sys-shape-corner-medium) var(--md-sys-shape-corner-medium);
+      padding: var(--md-sys-spacing-8) var(--md-sys-spacing-4) var(--md-sys-spacing-8) var(--md-sys-spacing-8);
+      max-width: calc(100% - 52px);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .message-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--md-sys-spacing-4);
+    }
+
+    .message-sender {
+      font-weight: var(--md-sys-typescale-title-medium-font-weight);
+      font-size: var(--md-sys-typescale-body-medium-font-size);
+      color: var(--md-sys-color-on-surface);
+    }
+
+    .message-time {
+      font-size: var(--md-sys-typescale-label-medium-font-size);
+      color: var(--md-sys-color-on-surface-variant);
+    }
+
+    .message-text {
+      color: var(--md-sys-color-on-surface-variant);
+      font-size: var(--md-sys-typescale-body-large-font-size);
+      line-height: 1.4;
+      white-space: pre-wrap;
+      text-align: left;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      word-wrap: break-word;
+      text-indent: 0;
+    }
+
+    .user-message .message-text {
+      color: var(--md-sys-color-on-primary-container);
+    }
+
+    .chat-input-container {
+      border-top: 1px solid var(--md-sys-color-outline);
+      padding: var(--md-sys-spacing-16);
+      background: var(--md-sys-color-surface);
+    }
+
+    .chat-input-wrapper {
+      display: flex;
+      gap: var(--md-sys-spacing-8);
+      align-items: flex-end;
+      margin-bottom: var(--md-sys-spacing-12);
+    }
+
+    .chat-input {
+      flex: 1;
+      min-height: 40px;
+      max-height: 120px;
+      padding: var(--md-sys-spacing-12) var(--md-sys-spacing-16);
+      border: 1px solid var(--md-sys-color-outline);
+      border-radius: var(--md-sys-shape-corner-large);
+      font-size: var(--md-sys-typescale-body-large-font-size);
+      font-family: var(--md-sys-typescale-body-large-font-family-name), sans-serif;
+      background: var(--md-sys-color-surface);
+      color: var(--md-sys-color-on-surface);
+      resize: none;
+      transition: all 0.2s cubic-bezier(0.2, 0.0, 0, 1.0);
+    }
+
+    .chat-input:focus {
+      outline: none;
+      border-color: var(--md-sys-color-primary);
+      box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.12);
+    }
+
+    .send-button {
+      width: 40px;
+      height: 40px;
+      background: var(--md-sys-color-primary);
+      color: var(--md-sys-color-on-primary);
+      border: none;
+      border-radius: var(--md-sys-shape-corner-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.2, 0.0, 0, 1.0);
+      flex-shrink: 0;
+    }
+
+    .send-button:hover {
+      background: var(--md-sys-color-primary);
+      transform: scale(1.05);
+    }
+
+    .send-button:focus-visible {
+      outline: 2px solid var(--md-sys-color-primary);
+      outline-offset: 2px;
+    }
+
+    .send-button:disabled {
+      background: var(--md-sys-color-outline);
+      color: var(--md-sys-color-on-surface-variant);
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .send-button .material-symbols-outlined {
+      font-size: 18px;
+    }
+
+    .quick-actions {
+      display: flex;
+      gap: var(--md-sys-spacing-8);
+      flex-wrap: wrap;
+    }
+
+    .quick-action-button {
+      background: var(--md-sys-color-surface-container);
+      color: var(--md-sys-color-on-surface-variant);
+      border: 1px solid var(--md-sys-color-outline);
+      padding: var(--md-sys-spacing-8) var(--md-sys-spacing-12);
+      border-radius: var(--md-sys-shape-corner-large);
+      font-size: var(--md-sys-typescale-label-medium-font-size);
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.2, 0.0, 0, 1.0);
+      display: flex;
+      align-items: center;
+      gap: var(--md-sys-spacing-4);
+      flex-shrink: 0;
+      min-width: fit-content;
+      white-space: nowrap;
+    }
+
+    .quick-action-button:hover {
+      background: var(--md-sys-color-primary-container);
+      color: var(--md-sys-color-on-primary-container);
+      border-color: var(--md-sys-color-primary);
+    }
+
+    .quick-action-button:focus-visible {
+      outline: 2px solid var(--md-sys-color-primary);
+      outline-offset: 2px;
+    }
+
+    .quick-action-button .material-symbols-outlined {
+      font-size: 14px;
+      flex-shrink: 0;
+      font-weight: 400;
+      font-variation-settings: 
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 20;
+    }
+
+    .quick-action-button span:last-child {
+      white-space: nowrap;
+    }
+
+    /* Loading States */
+    .loading-inline {
+      display: flex;
+      align-items: center;
+      gap: var(--md-sys-spacing-8);
+    }
+
+    .spinner {
+      width: 14px;
+      height: 14px;
+      border: 2px solid var(--md-sys-color-outline);
+      border-top-color: var(--md-sys-color-primary);
+      border-radius: var(--md-sys-shape-corner-full);
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { 
+        transform: rotate(360deg); 
+      }
+    }
+
+    /* Review Tab */
+    .review-section {
+      padding: var(--md-sys-spacing-24);
+    }
+
+    .quality-score {
+      background: var(--md-sys-color-surface-container);
+      border-radius: var(--md-sys-shape-corner-medium);
+      padding: var(--md-sys-spacing-24);
+      text-align: center;
+      margin-bottom: var(--md-sys-spacing-24);
+      border: 1px solid var(--md-sys-color-outline);
+    }
+
+    .score-grade {
+      font-size: 40px;
+      font-weight: 700;
+      color: var(--md-sys-color-success);
+      font-family: var(--md-sys-typescale-display-large-font-family-name), sans-serif;
+    }
+
+    .score-label {
+      font-size: var(--md-sys-typescale-body-medium-font-size);
+      color: var(--md-sys-color-on-surface-variant);
+      margin-top: var(--md-sys-spacing-8);
+    }
+
+    .score-details {
+      margin-top: var(--md-sys-spacing-20);
+      text-align: left;
+    }
+
+    .score-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--md-sys-spacing-12) 0;
+      border-bottom: 1px solid var(--md-sys-color-outline);
+      font-size: var(--md-sys-typescale-body-medium-font-size);
+      margin-bottom: var(--md-sys-spacing-8);
+      cursor: pointer;
+      transition: background-color 0.2s cubic-bezier(0.2, 0.0, 0, 1.0);
+      border-radius: var(--md-sys-shape-corner-small);
+      padding-left: var(--md-sys-spacing-4);
+      padding-right: var(--md-sys-spacing-4);
+    }
+
+    .score-item:hover {
+      background-color: var(--md-sys-color-surface-container);
+    }
+
+    .score-item:last-of-type {
+      border-bottom: none;
+    }
+
+    .score-item-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .score-item-left {
+      display: flex;
+      align-items: center;
+      gap: var(--md-sys-spacing-8);
+    }
+
+    .score-expand-icon {
+      font-size: 16px;
+      color: var(--md-sys-color-on-surface-variant);
+      transition: transform 0.2s cubic-bezier(0.2, 0.0, 0, 1.0);
+    }
+
+    .score-item.expanded .score-expand-icon {
+      transform: rotate(90deg);
+    }
+
+    .score-display {
+      display: flex;
+      align-items: center;
+      gap: var(--md-sys-spacing-8);
+    }
+
+    .score-bar {
+      width: 100px;
+      height: 4px;
+      background: var(--md-sys-color-outline);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .score-fill {
+      height: 100%;
+      background: var(--md-sys-color-success);
+      transition: width 0.3s cubic-bezier(0.2, 0.0, 0, 1.0);
+    }
+
+    .score-value {
+      font-weight: var(--md-sys-typescale-title-medium-font-weight);
+      color: var(--md-sys-color-on-surface);
+      min-width: 35px;
+      text-align: right;
+    }
+
+    .score-explanation {
+      font-size: var(--md-sys-typescale-body-medium-font-size);
+      color: var(--md-sys-color-on-surface-variant);
+      margin: var(--md-sys-spacing-12) 0 var(--md-sys-spacing-20) 0;
+      padding: var(--md-sys-spacing-8) var(--md-sys-spacing-12);
+      line-height: 1.5;
+      font-style: italic;
+      background-color: rgba(60, 64, 67, 0.04);
+      border-radius: var(--md-sys-shape-corner-extra-small);
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.2, 0.0, 0, 1.0);
+    }
+
+    .score-explanation.expanded {
+      max-height: 200px;
+      opacity: 1;
+      margin-bottom: var(--md-sys-spacing-20);
+    }
+
+    /* Actions */
+    .action-buttons {
+      display: flex;
+      gap: var(--md-sys-spacing-12);
+      margin-bottom: var(--md-sys-spacing-24);
+    }
+
+    .action-buttons .button-primary,
+    .action-buttons .button-secondary {
+      flex: 1;
+    }
+
+    /* Floating Action Button */
+    .fab {
+      position: fixed;
+      bottom: var(--md-sys-spacing-24);
+      right: 624px;
+      width: 56px;
+      height: 56px;
+      background: var(--md-sys-color-primary);
+      color: var(--md-sys-color-on-primary);
+      border: none;
+      border-radius: var(--md-sys-shape-corner-large);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--md-sys-elevation-level3);
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.2, 0.0, 0, 1.0);
+      z-index: 999;
+    }
+
+    .fab:hover {
+      box-shadow: var(--md-sys-elevation-level3);
+      transform: scale(1.05);
+    }
+
+    .fab:focus-visible {
+      outline: 2px solid var(--md-sys-color-primary);
+      outline-offset: 4px;
+    }
+
+    .fab.nav-collapsed {
+      right: 624px;
+    }
+
+    .fab.hidden {
+      right: var(--md-sys-spacing-24);
+    }
+
+    .fab .material-symbols-outlined {
+      font-size: 20px;
+    }
+
+    /* Tooltip */
+    .tooltip {
+      position: absolute;
+      background: var(--md-sys-color-on-surface);
+      color: var(--md-sys-color-surface);
+      padding: var(--md-sys-spacing-8) var(--md-sys-spacing-12);
+      border-radius: var(--md-sys-shape-corner-extra-small);
+      font-size: var(--md-sys-typescale-label-medium-font-size);
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s cubic-bezier(0.2, 0.0, 0, 1.0);
+      z-index: 2000;
+      max-width: 300px;
+      white-space: normal;
+    }
+
+    .tooltip.show {
+      opacity: 1;
+    }
+
+    /* Focus Management */
+    :focus-visible {
+      outline: 2px solid var(--md-sys-color-primary);
+      outline-offset: 2px;
+      border-radius: var(--md-sys-shape-corner-extra-small);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1400px) {
+      .extension-container {
+        width: 520px;
+      }
+      
+      .confluence-page {
+        width: calc(100% - 520px);
+        margin-right: 520px;
+      }
+      
+      .confluence-page.collapsed {
+        width: calc(100% - 520px);
+        margin-right: 520px;
+      }
+      
+      .fab {
+        right: 544px;
+      }
+      
+      .fab.nav-collapsed {
+        right: 544px;
+      }
+      
+      .fab.hidden {
+        right: var(--md-sys-spacing-24);
+      }
+    }
+
+    @media (max-width: 1200px) {
+      .extension-container {
+        width: 480px;
+      }
+      
+      .confluence-page {
+        width: calc(100% - 480px);
+        margin-right: 480px;
+      }
+      
+      .confluence-page.collapsed {
+        width: calc(100% - 480px);
+        margin-right: 480px;
+      }
+      
+      .fab {
+        right: 504px;
+      }
+      
+      .fab.nav-collapsed {
+        right: 504px;
+      }
+      
+      .fab.hidden {
+        right: var(--md-sys-spacing-24);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .confluence-page {
+        padding: var(--md-sys-spacing-24) var(--md-sys-spacing-16);
+      }
+      
+      .confluence-title {
+        font-size: 20px;
+      }
+      
+      .extension-container {
+        width: 100%;
+        max-width: 420px;
+      }
+      
+      .confluence-page {
+        width: 100%;
+        margin-right: 0;
+      }
+      
+      .confluence-page.collapsed {
+        width: 100%;
+        margin-right: 0;
+      }
+      
+      .confluence-page.hidden {
+        display: none;
+      }
+      
+      .fab {
+        display: none;
+      }
+    }
+
+    /* Accessibility Improvements */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+    </style>
+</head>
+<body>
+    <!-- Mock Confluence Page -->
+    <main class="confluence-page" id="confluencePage">
+        <div class="confluence-header">
+            <nav class="confluence-breadcrumb" aria-label="Breadcrumb">
+                <span>Product Development</span>
+                <span class="material-symbols-outlined">chevron_right</span>
+                <span>Q3 2025</span>
+                <span class="material-symbols-outlined">chevron_right</span>
+                <span>PRDs</span>
+            </nav>
+            <h1 class="confluence-title">New Customer Portal PRD</h1>
+        </div>
+        
+        <div class="confluence-content">
+            <section class="confluence-section">
+                <h2>Executive Summary</h2>
+                <p>The Customer Portal initiative aims to <span class="ai-suggestion" data-agent="pm" data-tooltip="PM Agent: Consider specifying which capabilities">provide self-service capabilities</span> to our enterprise customers, reducing support tickets by 40% and improving customer satisfaction.</p>
+            </section>
+            
+            <section class="confluence-section">
+                <h2>Problem Statement</h2>
+                <p>Currently, customers must <span class="ai-suggestion tech" data-agent="tech" data-tooltip="Tech Lead: Define API requirements for account management">contact support for basic account management</span> tasks, creating unnecessary friction and increasing operational costs.</p>
+            </section>
+            
+            <section class="confluence-section">
+                <h2>Security Considerations</h2>
+                <p><span class="ai-suggestion security" data-agent="security" data-tooltip="Security Agent: Specify OAuth 2.0 or SAML implementation">Authentication will use SSO</span> with multi-factor authentication required for sensitive operations.</p>
+            </section>
+
+            <section class="confluence-section">
+                <h2>User Stories</h2>
+                <p>As an enterprise customer, I want to access my account dashboard so that I can view my current usage and billing information without contacting support.</p>
+            </section>
+
+            <section class="confluence-section">
+                <h2>Success Metrics</h2>
+                <ul>
+                    <li>40% reduction in support tickets</li>
+                    <li>85% customer satisfaction score</li>
+                    <li>90% feature adoption rate within 3 months</li>
+                </ul>
+            </section>
+        </div>
+    </main>
+
+    <!-- ChatPRD Extension Container -->
+    <div class="extension-container" id="extensionContainer">
+        <!-- Navigation Rail -->
+        <nav class="navigation-rail" id="navigationRail" role="tablist">
+            <!-- Header -->
+            <div class="nav-header">
+                <div class="nav-logo">
+                    <span class="material-symbols-outlined">edit_note</span>
+                </div>
+            </div>
+            
+            <!-- Navigation Items -->
+            <div class="nav-items">
+                <button class="nav-item active" 
+                        role="tab" 
+                        aria-selected="true" 
+                        aria-controls="createTab" 
+                        onclick="switchTab('create', this)"
+                        title="Create PRD">
+                    <span class="material-symbols-outlined">add</span>
+                </button>
+                <button class="nav-item" 
+                        role="tab" 
+                        aria-selected="false" 
+                        aria-controls="chatTab" 
+                        onclick="switchTab('chat', this)"
+                        title="Chat with AI">
+                    <span class="material-symbols-outlined">chat</span>
+                </button>
+                <button class="nav-item" 
+                        role="tab" 
+                        aria-selected="false" 
+                        aria-controls="agentsTab" 
+                        onclick="switchTab('agents', this)"
+                        title="View Agent Feedback">
+                    <span class="material-symbols-outlined">smart_toy</span>
+                </button>
+                <button class="nav-item" 
+                        role="tab" 
+                        aria-selected="false" 
+                        aria-controls="reviewTab" 
+                        onclick="switchTab('review', this)"
+                        title="Review & Export">
+                    <span class="material-symbols-outlined">rate_review</span>
+                </button>
+            </div>
+            
+            <!-- Bottom Actions -->
+            <div class="nav-bottom">
+                <button class="nav-close" onclick="toggleSidebar()" aria-label="Close extension">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="content-area" id="contentArea">
+
+        <!-- Tab Content -->
+        <!-- Create Tab -->
+        <div class="tab-content active" id="createTab" role="tabpanel">
+            <div class="create-section">
+                <div class="input-group">
+                    <label class="input-label" for="productVision">Product Vision</label>
+                    <textarea class="textarea-input" 
+                              id="productVision"
+                              placeholder="Describe your product vision in a few sentences..."
+                              rows="4">Build a self-service customer portal that enables enterprise customers to manage their accounts, view analytics, and access support resources without contacting our support team.</textarea>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" for="targetUsers">Target Users</label>
+                    <input type="text" 
+                           class="text-input" 
+                           id="targetUsers"
+                           value="Enterprise customers, Account administrators">
+                </div>
+
+                <div class="upload-area" onclick="simulateFileUpload()" role="button" tabindex="0">
+                    <span class="material-symbols-outlined upload-icon">cloud_upload</span>
+                    <div class="upload-text">
+                        <strong>Drop files here or click to upload</strong><br>
+                        <small>PDF, CSV, DOCX, TXT (Max 10MB)</small>
+                    </div>
+                </div>
+
+                <div class="context-files" id="contextFiles">
+                    <div class="file-chip" data-filename="customer-research.pdf">
+                        <span class="material-symbols-outlined">description</span>
+                        <span>customer-research.pdf</span>
+                        <button class="chip-remove" onclick="removeFile(this)" aria-label="Remove file">
+                            <span class="material-symbols-outlined">close</span>
+                        </button>
+                    </div>
+                    <div class="file-chip" data-filename="competitive-analysis.csv">
+                        <span class="material-symbols-outlined">table_chart</span>
+                        <span>competitive-analysis.csv</span>
+                        <button class="chip-remove" onclick="removeFile(this)" aria-label="Remove file">
+                            <span class="material-symbols-outlined">close</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" for="confluenceContext">Confluence Context</label>
+                    <input type="url" 
+                           class="text-input" 
+                           id="confluenceContext"
+                           placeholder="Paste Confluence page URL for context">
+                </div>
+
+                <button class="button-primary" onclick="generatePRD()">
+                    <span class="material-symbols-outlined">auto_awesome</span>
+                    Generate PRD
+                </button>
+            </div>
+        </div>
+
+        <!-- Chat Tab -->
+        <div class="tab-content" id="chatTab" role="tabpanel">
+            <div class="chat-section">
+                <div class="chat-header">
+                    <div class="chat-agent-selector">
+                        <label class="input-label">Chat with Agent:</label>
+                        <select class="agent-select" id="chatAgentSelect" onchange="switchChatAgent(this.value)">
+                            <option value="general">General Assistant</option>
+                            <option value="pm">Product Manager</option>
+                            <option value="tech">Tech Lead</option>
+                            <option value="security">Security Expert</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="chat-messages" id="chatMessages">
+                    <div class="chat-message agent-message">
+                        <div class="message-avatar general">
+                            <span class="material-symbols-outlined">assistant</span>
+                        </div>
+                        <div class="message-content">
+                            <div class="message-header">
+                                <span class="message-sender">ChatPRD Assistant</span>
+                                <span class="message-time">Just now</span>
+                            </div>
+                            <div class="message-text">
+                                Hi! I'm here to help you create amazing PRDs. I can assist with brainstorming, structure, technical considerations, and more. What would you like to work on today?
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chat-input-container">
+                    <div class="chat-input-wrapper">
+                        <textarea class="chat-input" 
+                                  id="chatInput" 
+                                  placeholder="Ask me anything about your PRD..." 
+                                  rows="1"
+                                  onkeydown="handleChatKeydown(event)"></textarea>
+                        <button class="send-button" 
+                                onclick="sendChatMessage()" 
+                                aria-label="Send message">
+                            <span class="material-symbols-outlined">send</span>
+                        </button>
+                    </div>
+                    
+                    <div class="quick-actions">
+                        <button class="quick-action-button" onclick="sendQuickMessage('Help me structure my PRD')">
+                            <span class="material-symbols-outlined">account_tree</span>
+                            <span>Structure PRD</span>
+                        </button>
+                        <button class="quick-action-button" onclick="sendQuickMessage('Review my user stories')">
+                            <span class="material-symbols-outlined">person</span>
+                            <span>Review Stories</span>
+                        </button>
+                        <button class="quick-action-button" onclick="sendQuickMessage('Check technical feasibility')">
+                            <span class="material-symbols-outlined">engineering</span>
+                            <span>Tech Review</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Agents Tab -->
+        <div class="tab-content" id="agentsTab" role="tabpanel">
+            <div class="agents-section">
+                <div class="agent-card" data-agent="pm">
+                    <div class="agent-header">
+                        <div class="agent-avatar pm" aria-hidden="true">
+                            <span class="material-symbols-outlined">person</span>
+                        </div>
+                        <div class="agent-info">
+                            <h3 class="agent-name">Product Manager Agent</h3>
+                            <p class="agent-role">PRD Completeness & Clarity</p>
+                        </div>
+                        <div class="agent-status active">
+                            <span class="material-symbols-outlined">check_circle</span>
+                            <span>Active</span>
+                        </div>
+                    </div>
+                    <div class="agent-feedback">
+                        Your PRD is missing key sections: Success Metrics and Timeline. I've also identified 3 areas where user stories could be more specific.
+                    </div>
+                    <div class="feedback-actions">
+                        <button class="button-secondary feedback-button">
+                            <span class="material-symbols-outlined">visibility</span>
+                            View Suggestions
+                        </button>
+                        <button class="button-primary feedback-button">
+                            <span class="material-symbols-outlined">check</span>
+                            Apply All
+                        </button>
+                    </div>
+                </div>
+
+                <div class="agent-card" data-agent="tech">
+                    <div class="agent-header">
+                        <div class="agent-avatar tech" aria-hidden="true">
+                            <span class="material-symbols-outlined">code</span>
+                        </div>
+                        <div class="agent-info">
+                            <h3 class="agent-name">Tech Lead Agent</h3>
+                            <p class="agent-role">Technical Feasibility</p>
+                        </div>
+                        <div class="agent-status pending">
+                            <span class="material-symbols-outlined">pending</span>
+                            <span>Analyzing</span>
+                        </div>
+                    </div>
+                    <div class="agent-feedback">
+                        <div class="loading-inline">
+                            <div class="spinner"></div>
+                            Reviewing technical dependencies and architecture requirements...
+                        </div>
+                    </div>
+                </div>
+
+                <div class="agent-card" data-agent="security">
+                    <div class="agent-header">
+                        <div class="agent-avatar security" aria-hidden="true">
+                            <span class="material-symbols-outlined">security</span>
+                        </div>
+                        <div class="agent-info">
+                            <h3 class="agent-name">Security Agent</h3>
+                            <p class="agent-role">Security & Compliance</p>
+                        </div>
+                        <div class="agent-status active">
+                            <span class="material-symbols-outlined">check_circle</span>
+                            <span>Reviewed</span>
+                        </div>
+                    </div>
+                    <div class="agent-feedback">
+                        Found 2 security considerations: Need to specify data encryption standards and add GDPR compliance requirements for EU customers.
+                    </div>
+                    <div class="feedback-actions">
+                        <button class="button-secondary feedback-button">
+                            <span class="material-symbols-outlined">info</span>
+                            View Details
+                        </button>
+                        <button class="button-primary feedback-button">
+                            <span class="material-symbols-outlined">add</span>
+                            Add to PRD
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Review Tab -->
+        <div class="tab-content" id="reviewTab" role="tabpanel">
+            <div class="review-section">
+                <div class="quality-score">
+                    <div class="score-grade">A-</div>
+                    <div class="score-label">PRD Quality Score</div>
+                    
+                    <div class="score-details">
+                        <div class="score-item" onclick="toggleScoreExplanation(this)">
+                            <div class="score-item-content">
+                                <div class="score-item-left">
+                                    <span class="material-symbols-outlined score-expand-icon">chevron_right</span>
+                                    <span>Completeness</span>
+                                </div>
+                                <div class="score-display">
+                                    <div class="score-bar">
+                                        <div class="score-fill" style="width: 85%"></div>
+                                    </div>
+                                    <span class="score-value">85%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="score-explanation">
+                            Missing timeline section and detailed success metrics. User stories could be more comprehensive.
+                        </div>
+                        
+                        <div class="score-item" onclick="toggleScoreExplanation(this)">
+                            <div class="score-item-content">
+                                <div class="score-item-left">
+                                    <span class="material-symbols-outlined score-expand-icon">chevron_right</span>
+                                    <span>Clarity</span>
+                                </div>
+                                <div class="score-display">
+                                    <div class="score-bar">
+                                        <div class="score-fill" style="width: 90%"></div>
+                                    </div>
+                                    <span class="score-value">90%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="score-explanation">
+                            Clear problem statement and executive summary. Could benefit from more specific acceptance criteria.
+                        </div>
+                        
+                        <div class="score-item" onclick="toggleScoreExplanation(this)">
+                            <div class="score-item-content">
+                                <div class="score-item-left">
+                                    <span class="material-symbols-outlined score-expand-icon">chevron_right</span>
+                                    <span>Technical Detail</span>
+                                </div>
+                                <div class="score-display">
+                                    <div class="score-bar">
+                                        <div class="score-fill" style="width: 80%"></div>
+                                    </div>
+                                    <span class="score-value">80%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="score-explanation">
+                            Architecture overview present but lacks API specifications and database schema details.
+                        </div>
+                        
+                        <div class="score-item" onclick="toggleScoreExplanation(this)">
+                            <div class="score-item-content">
+                                <div class="score-item-left">
+                                    <span class="material-symbols-outlined score-expand-icon">chevron_right</span>
+                                    <span>Security</span>
+                                </div>
+                                <div class="score-display">
+                                    <div class="score-bar">
+                                        <div class="score-fill" style="width: 88%"></div>
+                                    </div>
+                                    <span class="score-value">88%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="score-explanation">
+                            Good SSO and MFA coverage. Missing data encryption standards and GDPR compliance details.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="button-primary">
+                        <span class="material-symbols-outlined">publish</span>
+                        Post to Confluence
+                    </button>
+                    <button class="button-secondary">
+                        <span class="material-symbols-outlined">download</span>
+                        Export
+                    </button>
+                </div>
+             </div>
+         </div>
+         
+         </main>
+     </div>
+
+     <!-- Floating Action Button -->
+     <button class="fab" id="fab" onclick="toggleSidebar()" aria-label="Toggle ChatPRD extension">
+         <span class="material-symbols-outlined">edit_note</span>
+     </button>
+
+    <!-- Tooltip -->
+    <div class="tooltip" id="tooltip" role="tooltip"></div>
+
+    <script>
+    /**
+     * ChatPRD Chrome Extension Prototype
+     * Main JavaScript functionality
+     */
+
+    // Global state
+    let extensionVisible = true;
+    let currentTab = 'create';
+    let currentChatAgent = 'general';
+
+    // DOM elements
+    const extensionContainer = document.getElementById('extensionContainer');
+    const navigationRail = document.getElementById('navigationRail');
+    const confluencePage = document.getElementById('confluencePage');
+    const fab = document.getElementById('fab');
+    const tooltip = document.getElementById('tooltip');
+
+    // Initialize the application
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeTooltips();
+      initializeFileUpload();
+      initializeKeyboardNavigation();
+      
+      // Simulate real-time agent updates
+      setTimeout(simulateAgentUpdates, 5000);
+    });
+
+    /**
+     * Toggle extension visibility
+     */
+    function toggleSidebar() {
+      extensionVisible = !extensionVisible;
+      
+      if (extensionVisible) {
+        extensionContainer.classList.remove('hidden');
+        confluencePage.classList.remove('hidden');
+        fab.classList.remove('hidden');
+      } else {
+        extensionContainer.classList.add('hidden');
+        confluencePage.classList.add('hidden');
+        fab.classList.add('hidden');
+      }
+      
+      // Announce state change for screen readers
+      const announcement = extensionVisible ? 'Extension opened' : 'Extension closed';
+      announceToScreenReader(announcement);
+    }
+
+    /**
+     * Switch between tabs
+     */
+    function switchTab(tabName, clickedElement) {
+      // Update tab content visibility
+      const allTabContents = document.querySelectorAll('.tab-content');
+      const allNavItems = document.querySelectorAll('.nav-item');
+      
+      allTabContents.forEach(content => content.classList.remove('active'));
+      allNavItems.forEach(item => {
+        item.classList.remove('active');
+        item.setAttribute('aria-selected', 'false');
+      });
+      
+      document.getElementById(tabName + 'Tab').classList.add('active');
+      clickedElement.classList.add('active');
+      clickedElement.setAttribute('aria-selected', 'true');
+      
+      currentTab = tabName;
+      
+      // Special handling for review tab
+      if (tabName === 'review') {
+        setTimeout(animateScoreBars, 200);
+      }
+      
+      // Announce tab change for screen readers
+      const tabNames = {
+        'create': 'Create PRD',
+        'chat': 'Chat with AI',
+        'agents': 'Agent Feedback',
+        'review': 'Review & Export'
+      };
+      
+      announceToScreenReader(`Switched to ${tabNames[tabName]} tab`);
+    }
+
+    /**
+     * Simulate PRD generation
+     */
+    function generatePRD() {
+      const button = event.target;
+      const originalText = button.innerHTML;
+      
+      // Show loading state
+      button.innerHTML = '<div class="spinner"></div><span>Generating...</span>';
+      button.disabled = true;
+      
+      // Simulate API call
+      setTimeout(() => {
+        button.innerHTML = originalText;
+        button.disabled = false;
+        
+        // Switch to agents tab and show activity
+        switchTab('agents', document.querySelector('[onclick="switchTab(\'agents\', this)"]'));
+        
+        announceToScreenReader('PRD generation complete. Switched to Agent Feedback tab.');
+      }, 3000);
+    }
+
+    /**
+     * File upload simulation
+     */
+    function simulateFileUpload() {
+      const uploadArea = event.target.closest('.upload-area');
+      const contextFiles = document.getElementById('contextFiles');
+      
+      // Simulate file selection
+      const fileTypes = ['pdf', 'docx', 'csv', 'txt'];
+      const fileNames = ['requirements', 'specs', 'research', 'analysis'];
+      
+      const randomType = fileTypes[Math.floor(Math.random() * fileTypes.length)];
+      const randomName = fileNames[Math.floor(Math.random() * fileNames.length)];
+      const fileName = `${randomName}.${randomType}`;
+      
+      // Create file chip
+      const fileChip = document.createElement('div');
+      fileChip.className = 'file-chip';
+      fileChip.setAttribute('data-filename', fileName);
+      
+      const icon = randomType === 'pdf' ? 'description' : 
+                   randomType === 'csv' ? 'table_chart' : 
+                   randomType === 'docx' ? 'article' : 'draft';
+      
+      fileChip.innerHTML = `
+        <span class="material-symbols-outlined">${icon}</span>
+        <span>${fileName}</span>
+        <button class="chip-remove" onclick="removeFile(this)" aria-label="Remove file">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      `;
+      
+      contextFiles.appendChild(fileChip);
+      announceToScreenReader(`File ${fileName} uploaded successfully`);
+    }
+
+    /**
+     * Remove uploaded file
+     */
+    function removeFile(button) {
+      const fileChip = button.closest('.file-chip');
+      const fileName = fileChip.getAttribute('data-filename');
+      
+      fileChip.remove();
+      announceToScreenReader(`File ${fileName} removed`);
+    }
+
+    /**
+     * Chat functionality
+     */
+    function sendChatMessage() {
+      const chatInput = document.getElementById('chatInput');
+      const message = chatInput.value.trim();
+      
+      if (!message) return;
+      
+      const chatMessages = document.getElementById('chatMessages');
+      
+      // Add user message
+      const userMessage = createChatMessage(message, 'user', 'You');
+      chatMessages.appendChild(userMessage);
+      
+      // Clear input
+      chatInput.value = '';
+      
+      // Show typing indicator
+      const typingMessage = createTypingMessage();
+      chatMessages.appendChild(typingMessage);
+      
+      // Scroll to bottom
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+      
+      // Simulate AI response
+      setTimeout(() => {
+        chatMessages.removeChild(typingMessage);
+        
+        const aiResponse = generateAIResponse(message, currentChatAgent);
+        const aiMessage = createChatMessage(aiResponse.message, currentChatAgent, aiResponse.sender);
+        chatMessages.appendChild(aiMessage);
+        
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        announceToScreenReader(`${aiResponse.sender} responded`);
+      }, 1500);
+      
+      announceToScreenReader('Message sent');
+    }
+
+    /**
+     * Quick message sending
+     */
+    function sendQuickMessage(message) {
+      const chatInput = document.getElementById('chatInput');
+      chatInput.value = message;
+      sendChatMessage();
+    }
+
+    /**
+     * Handle chat input keyboard events
+     */
+    function handleChatKeydown(event) {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        sendChatMessage();
+      }
+    }
+
+    /**
+     * Switch chat agent
+     */
+    function switchChatAgent(agent) {
+      currentChatAgent = agent;
+      
+      const agentNames = {
+        'general': 'General Assistant',
+        'pm': 'Product Manager',
+        'tech': 'Tech Lead',
+        'security': 'Security Expert'
+      };
+      
+      announceToScreenReader(`Switched to ${agentNames[agent]}`);
+    }
+
+    /**
+     * Create chat message element
+     */
+    function createChatMessage(text, agent, sender) {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `chat-message ${agent === 'user' ? 'user-message' : 'agent-message'}`;
+      
+      const now = new Date();
+      const timeString = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+      
+      messageDiv.innerHTML = `
+        <div class="message-avatar ${agent}">
+          ${agent === 'user' ? '<span class="material-symbols-outlined">person</span>' : 
+            agent === 'general' ? '<span class="material-symbols-outlined">assistant</span>' :
+            agent === 'pm' ? '<span class="material-symbols-outlined">person</span>' :
+            agent === 'tech' ? '<span class="material-symbols-outlined">code</span>' :
+            '<span class="material-symbols-outlined">security</span>'}
+        </div>
+        <div class="message-content">
+          <div class="message-header">
+            <span class="message-sender">${sender}</span>
+            <span class="message-time">${timeString}</span>
+          </div>
+          <div class="message-text">${text}</div>
+        </div>
+      `;
+      
+      return messageDiv;
+    }
+
+    /**
+     * Create typing indicator
+     */
+    function createTypingMessage() {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'chat-message agent-message';
+      
+      const agentData = {
+        'general': { name: 'ChatPRD Assistant', icon: 'assistant' },
+        'pm': { name: 'Product Manager', icon: 'person' },
+        'tech': { name: 'Tech Lead', icon: 'code' },
+        'security': { name: 'Security Expert', icon: 'security' }
+      };
+      
+      const agent = agentData[currentChatAgent];
+      
+      messageDiv.innerHTML = `
+        <div class="message-avatar ${currentChatAgent}">
+          <span class="material-symbols-outlined">${agent.icon}</span>
+        </div>
+        <div class="message-content">
+          <div class="message-header">
+            <span class="message-sender">${agent.name}</span>
+            <span class="message-time">now</span>
+          </div>
+          <div class="message-text">
+            <div class="loading-inline">
+              <div class="spinner"></div>
+              Typing...
+            </div>
+          </div>
+        </div>
+      `;
+      
+      return messageDiv;
+    }
+
+    /**
+     * Generate AI response based on agent and message
+     */
+    function generateAIResponse(message, agent) {
+      const responses = {
+        'general': {
+          sender: 'ChatPRD Assistant',
+          message: 'I can help you with that! Let me analyze your request and provide some structured guidance for your PRD.'
+        },
+        'pm': {
+          sender: 'Product Manager',
+          message: 'From a product perspective, I\'d recommend focusing on user outcomes and success metrics. Have you considered the key performance indicators for this feature?'
+        },
+        'tech': {
+          sender: 'Tech Lead',
+          message: 'Looking at this from a technical standpoint, we\'ll need to consider the architecture implications. What\'s the expected scale and performance requirements?'
+        },
+        'security': {
+          sender: 'Security Expert',
+          message: 'I notice some potential security considerations here. We should ensure proper authentication, authorization, and data protection measures are in place.'
+        }
+      };
+      
+      return responses[agent] || responses['general'];
+    }
+
+    /**
+     * Animate score bars on review tab
+     */
+    function animateScoreBars() {
+      const scoreFills = document.querySelectorAll('.score-fill');
+      scoreFills.forEach((fill, index) => {
+        setTimeout(() => {
+          const targetWidth = fill.style.width;
+          fill.style.width = '0%';
+          setTimeout(() => {
+            fill.style.width = targetWidth;
+          }, 50);
+        }, index * 100);
+      });
+    }
+
+    /**
+     * Simulate agent updates
+     */
+    function simulateAgentUpdates() {
+      // Update tech agent from pending to active
+      const techAgent = document.querySelector('[data-agent="tech"] .agent-status');
+      const techFeedback = document.querySelector('[data-agent="tech"] .agent-feedback');
+      
+      if (techAgent.classList.contains('pending')) {
+        setTimeout(() => {
+          techAgent.className = 'agent-status active';
+          techAgent.innerHTML = '<span class="material-symbols-outlined">check_circle</span><span>Complete</span>';
+          
+          techFeedback.innerHTML = 'Technical review complete. Identified 2 API dependencies and recommended microservices architecture. Database schema looks solid.';
+          
+          // Add action buttons
+          const actionsDiv = document.createElement('div');
+          actionsDiv.className = 'feedback-actions';
+          actionsDiv.innerHTML = `
+            <button class="button-secondary feedback-button">
+              <span class="material-symbols-outlined">code</span>
+              View Technical Details
+            </button>
+            <button class="button-primary feedback-button">
+              <span class="material-symbols-outlined">integration_instructions</span>
+              Update Architecture
+            </button>
+          `;
+          
+          techFeedback.parentElement.appendChild(actionsDiv);
+          announceToScreenReader('Tech Lead analysis complete');
+        }, 2000);
+      }
+    }
+
+    /**
+     * Toggle score explanation visibility
+     */
+    function toggleScoreExplanation(scoreItem) {
+      // Get the next sibling element (the explanation)
+      const explanation = scoreItem.nextElementSibling;
+      
+      if (!explanation || !explanation.classList.contains('score-explanation')) {
+        return;
+      }
+      
+      // Toggle the expanded state
+      const isExpanded = scoreItem.classList.contains('expanded');
+      
+      if (isExpanded) {
+        scoreItem.classList.remove('expanded');
+        explanation.classList.remove('expanded');
+      } else {
+        scoreItem.classList.add('expanded');
+        explanation.classList.add('expanded');
+      }
+      
+      // Announce state change for screen readers
+      const scoreType = scoreItem.querySelector('.score-item-left span:not(.score-expand-icon)').textContent;
+      const announcement = isExpanded ? 
+        `${scoreType} details collapsed` : 
+        `${scoreType} details expanded`;
+      announceToScreenReader(announcement);
+    }
+
+    /**
+     * Initialize tooltips
+     */
+    function initializeTooltips() {
+      const aiSuggestions = document.querySelectorAll('.ai-suggestion');
+      
+      aiSuggestions.forEach(suggestion => {
+        suggestion.addEventListener('mouseenter', showTooltip);
+        suggestion.addEventListener('mouseleave', hideTooltip);
+        suggestion.addEventListener('focus', showTooltip);
+        suggestion.addEventListener('blur', hideTooltip);
+      });
+    }
+
+    /**
+     * Show tooltip
+     */
+    function showTooltip(event) {
+      const element = event.target;
+      const tooltipText = element.getAttribute('data-tooltip');
+      
+      if (!tooltipText) return;
+      
+      tooltip.textContent = tooltipText;
+      tooltip.classList.add('show');
+      
+      // Position tooltip
+      const rect = element.getBoundingClientRect();
+      tooltip.style.left = rect.left + 'px';
+      tooltip.style.top = (rect.bottom + 8) + 'px';
+    }
+
+    /**
+     * Hide tooltip
+     */
+    function hideTooltip() {
+      tooltip.classList.remove('show');
+    }
+
+    /**
+     * Initialize file upload
+     */
+    function initializeFileUpload() {
+      const uploadArea = document.querySelector('.upload-area');
+      
+      // Handle drag and drop
+      uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.style.borderColor = 'var(--md-sys-color-primary)';
+      });
+      
+      uploadArea.addEventListener('dragleave', () => {
+        uploadArea.style.borderColor = 'var(--md-sys-color-outline)';
+      });
+      
+      uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.style.borderColor = 'var(--md-sys-color-outline)';
+        simulateFileUpload();
+      });
+    }
+
+    /**
+     * Initialize keyboard navigation
+     */
+    function initializeKeyboardNavigation() {
+      // Add keyboard support for upload area
+      const uploadArea = document.querySelector('.upload-area');
+      uploadArea.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          simulateFileUpload();
+        }
+      });
+      
+      // Add keyboard support for tab switching
+      document.addEventListener('keydown', (e) => {
+        if (e.altKey && e.key >= '1' && e.key <= '4') {
+          e.preventDefault();
+          const tabIndex = parseInt(e.key) - 1;
+          const tabs = ['create', 'chat', 'agents', 'review'];
+          const tabButton = document.querySelector(`[onclick="switchTab('${tabs[tabIndex]}', this)"]`);
+          if (tabButton) {
+            switchTab(tabs[tabIndex], tabButton);
+            tabButton.focus();
+          }
+        }
+      });
+    }
+
+    /**
+     * Announce to screen readers
+     */
+    function announceToScreenReader(text) {
+      const announcement = document.createElement('div');
+      announcement.setAttribute('aria-live', 'polite');
+      announcement.setAttribute('aria-atomic', 'true');
+      announcement.className = 'sr-only';
+      announcement.style.position = 'absolute';
+      announcement.style.left = '-10000px';
+      announcement.style.width = '1px';
+      announcement.style.height = '1px';
+      announcement.style.overflow = 'hidden';
+      announcement.textContent = text;
+      
+      document.body.appendChild(announcement);
+      
+      setTimeout(() => {
+        document.body.removeChild(announcement);
+      }, 1000);
+    }
+
+    // Input validation and feedback
+    document.addEventListener('input', function(event) {
+      const input = event.target;
+      
+      // Reset previous validation styles
+      if (input.classList.contains('text-input') || input.classList.contains('textarea-input')) {
+        input.style.borderColor = '';
+      }
+      
+      // Validate URLs
+      if (input.type === 'url' && input.value) {
+        try {
+          new URL(input.value);
+          input.style.borderColor = 'var(--md-sys-color-success)';
+        } catch {
+          input.style.borderColor = 'var(--md-sys-color-error)';
+        }
+      }
+    });
+
+    // Export functions for global access (if needed)
+    window.toggleSidebar = toggleSidebar;
+    window.switchTab = switchTab;
+    window.generatePRD = generatePRD;
+    window.simulateFileUpload = simulateFileUpload;
+    window.removeFile = removeFile;
+    window.sendChatMessage = sendChatMessage;
+    window.sendQuickMessage = sendQuickMessage;
+    window.handleChatKeydown = handleChatKeydown;
+    window.switchChatAgent = switchChatAgent;
+    window.toggleScoreExplanation = toggleScoreExplanation;
+    </script>
+</body>
+</html> 
